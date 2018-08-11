@@ -9,11 +9,13 @@ public class Task {
     public String getName() {
         return name;
     }
-// konstruktor 2 argumentowy
+
+    // konstruktor 2 argumentowy
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
     }
+
     // konstruktor 3 argumentowy
     public Task(String name, String description, boolean isFinished) {
         this(name, description);   // dwa argumenty wywoływujemy konstruktor 2 argumentowy z góry
@@ -36,17 +38,15 @@ public class Task {
         return isFinished;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", isFinished=" + isFinished +
-                '}';
-    }
-
     public void setFinished(boolean finished) {
         isFinished = finished;
-
     }
+
+    @Override
+    public String toString() {
+        return getName()+" "+getDescription()+
+                (isFinished ?  "skończone" : "nieskończone");
+    }
+
 }
+

@@ -9,22 +9,51 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class TaskController {
-    @ResponseBody // zwróc mi stringa
+
+
+    private TaskDao taskDao = new StaticDao();
+
+
     @PostMapping("/tasks")
     public  String create (
             @RequestParam String name,
             @RequestParam String description,
-            @RequestParam (required = false )boolean finiszed,
+            @RequestParam (required = false )boolean finished,
             ModelMap modelMap    // dane do strony wrzuca
-            ) {
-        Task task = new Task(name, description, finiszed);
+            )
+    {
+        Task task = new Task(name, description, finished);
         modelMap.put("task", task);
-        return "added" + task;
+        taskDao.addTask(task);
+        return "redirect:/tasks";
 
     }
+
+
+    @GetMapping ("/tasks")
+    public String index(ModelMap modelMap){
+        modelMap.put("tasks", taskDao.findAll());
+        return "index";
+    }
+
+
+    @GetMapping("/finished")
+    public String finished(ModelMap modelMap){
+        modelMap.put("tasks", taskDao.findByStatus(true));
+        return "index";
+    }
+
+
+    @GetMapping("/unfinished")
+    public String unfinished(ModelMap modelMap){
+        modelMap.put("tasks", taskDao.findByStatus(false));
+        return "index";
+    }
+
+
     //scierzka
     @GetMapping("/")
-public String add(){
+     public String add(){
         return "add";
     }
 }
